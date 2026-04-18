@@ -30,8 +30,9 @@ export default function Home() {
     setResults([]);
 
     try {
-      // Connect to the FastAPI backend backend on port 8000
-      const response = await fetch("http://localhost:8000/api/v1/recommend", {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      
+      const response = await fetch(`${API_URL}/api/v1/recommend`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +49,7 @@ export default function Home() {
       setResults(data.items || []);
     } catch (error) {
       console.error("Search error:", error);
-      setSummary("Our servers are taking a breather. Please ensure the Python backend is running on port 8000.");
+      setSummary("Our recommendation engine is currently unavailable. Please try again later or check your connection.");
     } finally {
       setIsLoading(false);
     }
@@ -66,34 +67,34 @@ export default function Home() {
         
         {/* Toolbar / Filters (Dynamic UI implementation) */}
         {(hasSearched || results.length > 0) && (
-            <div className="flex items-center justify-between mb-8 opacity-0 animate-fade-in" style={{animationFillMode: 'forwards'}}>
-                <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 opacity-0 animate-fade-in gap-4 md:gap-0" style={{animationFillMode: 'forwards'}}>
+                <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide shrink-0">
                     <button 
                         onClick={() => setSortBy('rank')}
-                        className={`font-bold text-sm px-5 py-2.5 rounded-full transition-colors ${sortBy === 'rank' ? 'bg-brand-light text-brand' : 'text-text-dark/70 hover:bg-gray-100'}`}
+                        className={`font-bold text-sm px-5 py-2.5 rounded-full transition-colors whitespace-nowrap ${sortBy === 'rank' ? 'bg-brand-light text-brand' : 'text-text-dark/70 hover:bg-gray-100'}`}
                     >
                         AI Recommended ({results.length})
                     </button>
                     <button 
                         onClick={() => setSortBy('rating_desc')}
-                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors ${sortBy === 'rating_desc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
+                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors whitespace-nowrap ${sortBy === 'rating_desc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
                     >
                         Top Rated
                     </button>
                     <button 
                         onClick={() => setSortBy('price_asc')}
-                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors ${sortBy === 'price_asc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
+                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors whitespace-nowrap ${sortBy === 'price_asc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
                     >
                         Price: Low to High
                     </button>
                     <button 
                         onClick={() => setSortBy('price_desc')}
-                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors ${sortBy === 'price_desc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
+                        className={`font-semibold text-sm px-5 py-2.5 rounded-full transition-colors whitespace-nowrap ${sortBy === 'price_desc' ? 'bg-brand text-white shadow-md' : 'text-text-dark/70 hover:bg-gray-100'}`}
                     >
                         Price: High to Low
                     </button>
                 </div>
-                <button className="flex items-center gap-2 text-text-dark font-semibold text-sm hover:text-brand transition-colors">
+                <button className="flex items-center gap-2 text-text-dark font-semibold text-sm hover:text-brand transition-colors shrink-0">
                     <SlidersHorizontal className="w-4 h-4" /> Filters
                 </button>
             </div>

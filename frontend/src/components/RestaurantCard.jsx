@@ -39,7 +39,7 @@ export default function RestaurantCard({ restaurant, isTopPick }) {
       {/* Content Area */}
       <div className="p-6 flex-1 flex flex-col">
         <div className="flex justify-between items-start gap-4 mb-3">
-            <h3 className="text-2xl font-bold text-text-dark leading-tight line-clamp-1">{restaurant.name}</h3>
+            <h3 className="text-xl md:text-2xl font-bold text-text-dark leading-tight line-clamp-1">{restaurant.name}</h3>
             {restaurant.rating !== null && (
                 <div className="flex items-center gap-1 bg-brand-light/50 px-2 py-1 rounded-md text-brand font-bold text-sm shrink-0">
                     <Star className="w-3.5 h-3.5 fill-current" />

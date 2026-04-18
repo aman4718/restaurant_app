@@ -13,7 +13,8 @@ export default function SearchBar({ onSearch, isLoading }) {
   const [rating, setRating] = useState(4.0);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/v1/options")
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/v1/options`)
       .then(res => res.json())
       .then(data => {
         setLocations(data.locations || []);
@@ -36,10 +37,10 @@ export default function SearchBar({ onSearch, isLoading }) {
     <div className="w-full max-w-5xl mx-auto px-4 -mt-16 relative z-10">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-[2.5rem] shadow-xl shadow-brand/5 p-4 flex flex-col md:flex-row items-center gap-4 justify-between"
+        className="bg-white md:rounded-[2.5rem] rounded-3xl shadow-xl shadow-brand/5 p-2 md:p-4 flex flex-col md:flex-row items-stretch md:items-center gap-0 md:gap-4 justify-between"
       >
         {/* Location Dropdown (Searchable) */}
-        <div className="flex-1 w-full px-4 border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0">
+        <div className="flex-1 w-full px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
           <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-1 flex items-center gap-1">
             <MapPin className="w-3 h-3" /> Location
           </label>
@@ -58,7 +59,7 @@ export default function SearchBar({ onSearch, isLoading }) {
         </div>
 
         {/* Cuisine (Searchable) */}
-        <div className="flex-1 w-full px-4 border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0">
+        <div className="flex-1 w-full px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
           <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-1 flex items-center gap-1">
             <Utensils className="w-3 h-3" /> Cuisine
           </label>
@@ -77,7 +78,7 @@ export default function SearchBar({ onSearch, isLoading }) {
         </div>
 
         {/* Budget */}
-        <div className="flex-1 w-full px-4 border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0">
+        <div className="flex-1 w-full px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
           <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-1 flex items-center gap-1">
             <IndianRupee className="w-3 h-3" /> Budget
           </label>
@@ -93,7 +94,7 @@ export default function SearchBar({ onSearch, isLoading }) {
         </div>
 
         {/* Rating Slider (inline row below basically, but keeping in flex for simplicity, or we do it inline here) */}
-        <div className="flex-[0.8] w-full px-4 flex flex-col justify-center">
+        <div className="flex-[0.8] w-full px-4 py-3">
             <div className="flex justify-between items-center mb-1">
                 <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
                 Min. Rating:
@@ -111,7 +112,7 @@ export default function SearchBar({ onSearch, isLoading }) {
         </div>
 
         {/* Find Button */}
-        <div className="pl-4 pr-1">
+        <div className="px-4 md:pl-4 md:pr-1 pt-2 md:pt-0">
           <button
             type="submit"
             disabled={isLoading}

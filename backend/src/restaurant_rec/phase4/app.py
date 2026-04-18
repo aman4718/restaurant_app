@@ -8,8 +8,18 @@ via a REST API at POST /api/v1/recommend.
 """
 
 import logging
+import os
+import sys
 from contextlib import asynccontextmanager
 from typing import List, Optional
+
+# Add the 'src' directory to sys.path to ensure 'restaurant_rec' is discoverable 
+# even if the server is started from the project root (common in Render/Vercel)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Navigate up to the 'src' directory (app.py is in src/restaurant_rec/phase4)
+src_dir = os.path.abspath(os.path.join(current_dir, "..", "..", ".."))
+if src_dir not in sys.path:
+    sys.path.insert(0, src_dir)
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException
