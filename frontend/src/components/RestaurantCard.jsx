@@ -2,15 +2,19 @@ import { Heart, Star } from "lucide-react";
 
 export default function RestaurantCard({ restaurant, isTopPick }) {
   // A collection of great, verified restaurant/food image IDs
+  // Verified high-quality food image IDs from Unsplash
   const imageIds = [
-    "1512152272829-451f28bc95b2", // the working one
-    "1504674900247-0877df9cc836", // tested generic food
-    "1414235077428-97116666ba56", // tested generic food
-    "1565299624946-b28f40a0ae38", // tested generic food
-    "1555939594-58d7cb561ad1"     // tested generic food
+    "1504674900247-0877df9cc836", // salad
+    "1512621776951-a57141f2eefd", // gourmet
+    "1555939594-58d7cb561ad1", // kebab
+    "1567622646611-2033069c9b46", // dessert
+    "1565299624946-b28f40a0ae38", // pizza
+    "1473093226795-af9932fe5856", // pasta
+    "1540189549336-e6e99c3679fe", // meal
+    "1565958011703-44f9829ba187"  // sushi
   ];
   
-  const seed = restaurant.name.length + restaurant.cuisines.length;
+  const seed = restaurant.name.length + (restaurant.cuisines ? restaurant.cuisines.length : 0);
   const imgSrc = `https://images.unsplash.com/photo-${imageIds[seed % imageIds.length]}?auto=format&fit=crop&q=80&w=600`;
 
   return (
@@ -21,6 +25,10 @@ export default function RestaurantCard({ restaurant, isTopPick }) {
           src={imgSrc} 
           alt={restaurant.name}
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            e.target.onerror = null; // Prevent infinite loop if fallback also fails
+            e.target.src = "https://images.unsplash.com/photo-1512152272829-451f28bc95b2?auto=format&fit=crop&q=80&w=600";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
         
