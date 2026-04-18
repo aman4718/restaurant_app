@@ -18,8 +18,8 @@ backend/.env
 
 # Data
 backend/data/raw/
-backend/data/processed/*.parquet
-**/*.parquet
+# backend/data/processed/*.parquet
+# **/*.parquet
 
 # Node.js
 frontend/node_modules/
