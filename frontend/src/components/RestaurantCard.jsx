@@ -1,6 +1,6 @@
 import { Heart, Star } from "lucide-react";
 
-export default function RestaurantCard({ restaurant, isTopPick }) {
+export default function RestaurantCard({ restaurant, isTopPick, searchedCuisine }) {
   // A collection of great, verified restaurant/food image IDs
   // Verified high-quality food image IDs from Unsplash
   const imageIds = [
@@ -57,11 +57,21 @@ export default function RestaurantCard({ restaurant, isTopPick }) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-            {restaurant.cuisines.slice(0, 3).map((cuisine, i) => (
-                <span key={i} className="text-[10px] font-bold text-brand uppercase bg-brand-light px-2.5 py-1 rounded-full tracking-wider">
-                    {cuisine}
-                </span>
-            ))}
+            {(() => {
+                const cuisines = [...restaurant.cuisines];
+                if (searchedCuisine) {
+                    const index = cuisines.findIndex(c => c.toLowerCase() === searchedCuisine.toLowerCase());
+                    if (index > -1) {
+                        const [found] = cuisines.splice(index, 1);
+                        cuisines.unshift(found);
+                    }
+                }
+                return cuisines.slice(0, 3).map((cuisine, i) => (
+                    <span key={i} className="text-[10px] font-bold text-brand uppercase bg-brand-light px-2.5 py-1 rounded-full tracking-wider">
+                        {cuisine}
+                    </span>
+                ));
+            })()}
         </div>
 
         <div className="flex items-center text-sm font-medium text-gray-500 mb-6 gap-2">
@@ -74,7 +84,7 @@ export default function RestaurantCard({ restaurant, isTopPick }) {
         <div className="mt-auto bg-brand-light/40 rounded-xl p-4 border border-brand/5 relative overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand/30"></div>
             <p className="text-sm italic text-text-dark/80 font-medium leading-relaxed">
-                &quot;<span className="text-brand font-semibold">AI:</span> {restaurant.explanation}&quot;
+                &quot;{restaurant.explanation}&quot;
             </p>
         </div>
       </div>

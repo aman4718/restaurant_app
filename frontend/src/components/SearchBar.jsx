@@ -109,6 +109,11 @@ export default function SearchBar({ onSearch, isLoading }) {
                 onChange={e => setRating(parseFloat(e.target.value))}
                 className="w-full h-1 bg-brand-light rounded-lg appearance-none cursor-pointer accent-brand"
             />
+            <div className="flex justify-between mt-1 px-0.5 pointer-events-none">
+                {[0, 1, 2, 3, 4, 5].map(v => (
+                    <span key={v} className="text-[8px] font-bold text-gray-400/60">{v}</span>
+                ))}
+            </div>
         </div>
 
         {/* Find Button */}

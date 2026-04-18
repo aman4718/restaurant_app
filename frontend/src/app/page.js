@@ -14,6 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [sortBy, setSortBy] = useState("rank");
+  const [searchedCuisine, setSearchedCuisine] = useState("");
 
   // Compute sorted results safely on the fly
   const sortedResults = [...results].sort((a, b) => {
@@ -28,6 +29,7 @@ export default function Home() {
     setHasSearched(true);
     setSummary("");
     setResults([]);
+    setSearchedCuisine(preferences.cuisine);
 
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -116,6 +118,7 @@ export default function Home() {
                 key={`${restaurant.id}-${idx}`} 
                 restaurant={restaurant} 
                 isTopPick={idx === 0 && sortBy === 'rank'} 
+                searchedCuisine={searchedCuisine}
               />
             ))}
           </div>

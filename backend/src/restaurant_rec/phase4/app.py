@@ -144,6 +144,8 @@ def recommend(preferences: UserPreferences):
             "recommendations": []
         }
 
+    import re
+
     # Merge Data
     summary = llm_response.get("summary", "")
     raw_recs = llm_response.get("recommendations", [])
@@ -169,8 +171,8 @@ def recommend(preferences: UserPreferences):
                     seen_names.add(name)
                     
                     # Handle pandas NaNs cleanly
-                    rating = float(row["rating"]) if pd.notna(row["rating"]) else None
-                    cost = float(row["cost_for_two"]) if pd.notna(row["cost_for_two"]) else None
+                    rating = round(float(row["rating"]), 1) if pd.notna(row["rating"]) else None
+                    cost = int(row["cost_for_two"]) if pd.notna(row["cost_for_two"]) else None
                     
                     # Numpy arrays inside 'cuisines' need converting to standard list
                     cuisines_list = list(row["cuisines"])
@@ -180,12 +182,30 @@ def recommend(preferences: UserPreferences):
                         cuisines=cuisines_list,
                         rating=rating,
                         cost_for_two=cost,
-                        explanation=str(r.get("explanation", "")),
+                        explanation=str(r.get("explanation", "")).replace(".0", "").replace("AI: ", "").replace("AI:", ""),
                         rank=int(r.get("rank", 0))
                     ))
                 
         # Guard against LLM returning weird ranks, enforce sort
         items.sort(key=lambda x: x.rank)
+
+    # Summary Patching: Ensure count consistency (e.g., "2 recommendations" -> "1 recommendation")
+    item_count = len(items)
+    if item_count == 1:
+        summary = re.sub(r'(?:top\s+)?(\d+|two|three|four|five)(\s+.*?recommendations?)', r"one recommendation", summary, flags=re.IGNORECASE)
+        summary = re.sub(r'(?:top\s+)?(\d+|two|three|four|five)(\s+.*?matches?)', r"one match", summary, flags=re.IGNORECASE)
+        summary = re.sub(r'top\s+(\d+|one|two|three|four|five)', "top one", summary, flags=re.IGNORECASE)
+    elif item_count > 1:
+        count_words = {2: "two", 3: "three", 4: "four", 5: "five"}
+        word = count_words.get(item_count, str(item_count))
+        # Replace the number but keep the descriptive words in between
+        summary = re.sub(r'(\d+|one|two|three|four|five)(\s+.*?recommendations?)', f"{word}\\2", summary, flags=re.IGNORECASE)
+        summary = re.sub(r'(\d+|one|two|three|four|five)(\s+.*?matches?)', f"{word}\\2", summary, flags=re.IGNORECASE)
+        summary = re.sub(r'top\s+(\d+|one|two|three|four|five)', f"top {word}", summary, flags=re.IGNORECASE)
+
+    # Clean up formatting in explanation as well
+    for item in items:
+        item.explanation = re.sub(r'(\d+)\.0', r'\1', item.explanation)
 
     return RecommendResponse(
         summary=summary,
