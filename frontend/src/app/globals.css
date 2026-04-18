@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #C21A30; /* The deep red from the Culinary Curator logo */
+  --color-brand-hover: #A01525;
+  --color-brand-light: #FCE8EA;
+  --color-bg-base: #FFFAF8;
+  --color-text-dark: #2A1E1E;
+}
+
+:root {
+  --background: #FFFAF8; /* Warm light base background */
+  --foreground: #2A1E1E;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111111;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-split-hero {
+  /* Using pseudo element for split bg instead directly on component */
+}
