@@ -1,0 +1,2 @@
+# This file keeps the data/processed/ directory tracked by git.
+# The actual .parquet files are listed in .gitignore.

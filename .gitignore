@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.pytest_cache/
+
+# Distribution / packaging
+# ... existing generic rules remain valid ...
+
+# Environment variables
+backend/.env
+.env
+**/venv/
+**/.venv/
+
+# Logs
+**/*.log
+
+# Data
+backend/data/raw/
+backend/data/processed/*.parquet
+**/*.parquet
+
+# Node.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+.npm
+.eslintcache
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Internal Documentation
+phase-wise-architecture.md
+problemStatement.md

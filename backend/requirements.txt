@@ -1,0 +1,17 @@
+# Phase 1 — Data Ingestion
+datasets>=2.14
+pandas>=2.0
+pyarrow>=13
+
+# Phase 3 — LLM Integration
+groq
+python-dotenv
+
+# Phase 4 — Backend API
+fastapi
+uvicorn[standard]
+pydantic>=2
+
+# Testing
+pytest>=8.0
+pytest-sugar
